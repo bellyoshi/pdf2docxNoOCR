@@ -1,5 +1,5 @@
 ﻿using System;
-using Aspose.Words;
+
 using System.Windows.Forms;
 
 namespace pdf2docx
@@ -15,7 +15,7 @@ namespace pdf2docx
         {
             openFileDialog1.ShowDialog();
             var filename = openFileDialog1.FileName;
-            var doc = new Document(filename);
+            var doc = new MyDocument(filename);
             doc.Save($"{filename}.Output.docx");
         }
     }
