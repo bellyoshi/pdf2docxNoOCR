@@ -16,10 +16,11 @@ namespace pdf2docx
 {
     internal class MyDocument
     {
+        private PdfiumViewer.PdfDocument pdfdoc { get; }
         private WordprocessingDocument wordDocument;
         public MyDocument(string filename)
         {
-            var doc = PdfDocument.Load(filename);
+            pdfdoc = PdfDocument.Load(filename);
         }
         public void Save(string filename)
         {
@@ -32,8 +33,15 @@ namespace pdf2docx
                          new Paragraph(
                             new Run(
                                new Text("Create text in body - CreateWordprocessingDocument")))));
-                
-                InsertAPicture(@"c:\abc.jpeg");
+
+
+                for (int i = 0; i < pdfdoc.PageCount; i++)
+                {
+                    var img = pdfdoc.Render(i, 96, 96, false);
+                    var tempfilename = Path.GetTempFileName();
+                    img.Save(tempfilename,System.Drawing.Imaging.ImageFormat.Jpeg);
+                    InsertAPicture(tempfilename);
+                }    
             }
         }
         public void InsertAPicture( string fileName)
